@@ -1,14 +1,22 @@
-//state
 export const state = () => ({
-  user: {}
+  user: {},
 })
 
-//mutations
-export const mutation = {
-  addUser(state, user){
-    state.user.push(user)
+export const actions = {
+  async getUser(ctx) {
+    const {data} = await this.$axios.get('/auth/user', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    ctx.commit('updatedUser', data)
+    return data
   }
 }
 
-//actions
+export const mutations = {
+  updatedUser(state, user) {
+    state.user = {...user}
+  }
+}
 
